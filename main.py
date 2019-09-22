@@ -37,12 +37,18 @@ def double_n(t: float) -> tuple:
     return ans, n
 
 
-def Gauss(f: 'func', t: float, a: float, b: float) -> float:
+def Gauss(f: 'func', t: float, a: float, b: float, n4: bool = False) -> float:
     """
     Квадратруа Гаусса
     """
-    _c = [i*(b - a)/2 for i in [5/9, 8/9, 5/9]]
-    _x = [i*(b - a)/2 + (b + a)/2 for i in [-(3/5)**0.5, 0, (3/5)**0.5]]
+    if n4:
+        _c = [0.347855, 0.652145, 0.652145, 0.347855]
+        _x = [-0.861136, -0.339981, 0.339981, 0.861136]
+    else:
+        _c = [5/9, 8/9, 5/9]
+        _x = [-(3/5)**0.5, 0, (3/5)**0.5]
+    _c = [i*(b - a)/2 for i in _c]
+    _x = [i*(b - a)/2 + (b + a)/2 for i in _x]
     return sum([c*f(x, t) for c, x in zip(_c, _x)])
 
 
