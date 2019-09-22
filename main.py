@@ -1,6 +1,7 @@
 import math
 from scipy import sin, cos, sqrt
 from scipy.integrate import quad
+import matplotlib.pyplot as plt
 a = -1
 b = 0
 c = 0.5
@@ -46,6 +47,9 @@ def Gauss(f: 'func', t: float, a: float, b: float) -> float:
 
 
 def main():
+    plot1 = []
+    plot2 = []
+    plot3 = []
     print('|' + 'Trapezoid'.rjust(10, ' '), end='')
     print('|' + 'Gauss'.rjust(10, ' '), end='')
     print('|' + 'SciPy'.rjust(10, ' ') + '|')
@@ -53,10 +57,25 @@ def main():
         I_1 = double_n(t)
         I_2 = Gauss(f, t, a, b)
         I_3 = quad(f, a, b, args=(t,))
+        plot1.append(I_1[0])
+        plot2.append(I_2)
+        plot3.append(I_3[0])
         print(('|' + '-'*10)*3 + '|')
         print('|' + '{0:10.7f}'.format(I_1[0]), end='')
         print('|' + '{0:10.7f}'.format(I_2), end='')
         print('|' + '{0:10.7f}'.format(I_3[0]) + '|')
+    d = plt.scatter(t_range, plot1, s=1, color='r')
+    g = plt.scatter(t_range, plot2, s=1, color='b')
+    q = plt.scatter(t_range, plot3, s=1, color='g')
+    plt.legend((d, g, q),
+               ('Trapezoid', 'Gauss', 'SciPy'),
+               scatterpoints=1,
+               loc='lower left',
+               ncol=3,
+               fontsize=8)
+    plt.xlabel('t')
+    plt.ylabel('F(t)')
+    plt.show()
 
 if __name__ == '__main__':
     main()
