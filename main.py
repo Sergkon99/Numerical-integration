@@ -1,5 +1,5 @@
 import math
-from scipy import sin, cos
+from scipy import sin, cos, sqrt
 from scipy.integrate import quad
 a = -1
 b = 0
@@ -36,19 +36,20 @@ def double_n(t: float) -> tuple:
     return ans, n
 
 
-def Gauss(t: float) -> None:
-    pass
+def Gauss(f: 'func', t: float, a: float, b: float) -> float:
+    """
+    Квадратруа Гаусса
+    """
+    _c = [i*(b - a)/2 for i in [5/9, 8/9, 5/9]]
+    _x = [i*(b - a)/2 + (b + a)/2 for i in [-(3/5)**0.5, 0, (3/5)**0.5]]
+    return sum([c*f(x, t) for c, x in zip(_c, _x)])
 
 
 for t in t_range:
     I_1 = double_n(t)
     I_2 = quad(f, a, b, args=(t,))
-    print(I_1[0], I_2[0])
-
-
-exit(0)
-
-print('-'*8)
-for _ in range(8):
-    print('|' + '_'*6 + '|')
-print('-'*8)
+    I_3 = Gauss(f, t, a, b)
+    print(('|' + '-'*10)*3 + '|')
+    print('|' + '{0:10.7f}'.format(I_1[0]), end='')
+    print('|' + '{0:10.7f}'.format(I_2[0]), end='')
+    print('|' + '{0:10.7f}'.format(I_3) + '|')
