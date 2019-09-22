@@ -45,11 +45,18 @@ def Gauss(f: 'func', t: float, a: float, b: float) -> float:
     return sum([c*f(x, t) for c, x in zip(_c, _x)])
 
 
-for t in t_range:
-    I_1 = double_n(t)
-    I_2 = quad(f, a, b, args=(t,))
-    I_3 = Gauss(f, t, a, b)
-    print(('|' + '-'*10)*3 + '|')
-    print('|' + '{0:10.7f}'.format(I_1[0]), end='')
-    print('|' + '{0:10.7f}'.format(I_2[0]), end='')
-    print('|' + '{0:10.7f}'.format(I_3) + '|')
+def main():
+    print('|' + 'Trapezoid'.rjust(10, ' '), end='')
+    print('|' + 'Gauss'.rjust(10, ' '), end='')
+    print('|' + 'SciPy'.rjust(10, ' ') + '|')
+    for t in t_range:
+        I_1 = double_n(t)
+        I_2 = Gauss(f, t, a, b)
+        I_3 = quad(f, a, b, args=(t,))
+        print(('|' + '-'*10)*3 + '|')
+        print('|' + '{0:10.7f}'.format(I_1[0]), end='')
+        print('|' + '{0:10.7f}'.format(I_2), end='')
+        print('|' + '{0:10.7f}'.format(I_3[0]) + '|')
+
+if __name__ == '__main__':
+    main()
