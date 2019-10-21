@@ -6,7 +6,7 @@ a = -1
 b = 0
 c = 0.5
 d = 1.5
-m = 15
+m = 20
 eps = 10**-3
 t_range = [c + j*(d - c)/m for j in range(m+1)]
 
@@ -26,13 +26,13 @@ def s_n(f: 'func', t: float, a: float, b: float, n: int) -> float:
                for j in range(1, n+1)])
 
 
-def double_n(t: float) -> tuple:
+def double_n(f: 'func', t: float) -> tuple:
     """
     Метод удвоения числа шагов для стандартной квадратуры
     """
     n = 1
     while abs(s_n(f, t, a, b, n) - s_n(f, t, a, b, 2*n)) > eps:
-        n += 1
+        n *= 2
     ans = s_n(f, t, a, b, n)
     return ans, n
 
@@ -60,7 +60,7 @@ def main():
     print('|' + 'Gauss'.rjust(10, ' '), end='')
     print('|' + 'SciPy'.rjust(10, ' ') + '|')
     for t in t_range:
-        I_1 = double_n(t)
+        I_1 = double_n(f, t)
         I_2 = Gauss(f, t, a, b)
         I_3 = quad(f, a, b, args=(t,))
         plot1.append(I_1[0])
@@ -69,11 +69,11 @@ def main():
         print(('|' + '-'*10)*3 + '|')
         print('|' + '{0:10.7f}'.format(I_1[0]), end='')
         print('|' + '{0:10.7f}'.format(I_2), end='')
-        print('|' + '{0:10.7f}'.format(I_3[0]) + '|')
+        print('|' + '{0:10.7f}'.format(I_3[0]) + '|', I_1[1])
     d = plt.scatter(t_range, plot1, s=1, color='r')
-    g = plt.scatter(t_range, plot2, s=1, color='b')
+    g_ = plt.scatter(t_range, plot2, s=1, color='b')
     q = plt.scatter(t_range, plot3, s=1, color='g')
-    plt.legend((d, g, q),
+    plt.legend((d, g_, q),
                ('Trapezoid', 'Gauss', 'SciPy'),
                scatterpoints=1,
                loc='lower left',
